@@ -1,17 +1,109 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
+<html lang="ru-ru" data-theme="light">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <style type="text/css">
+        :root{
+            --color-coral: #fe2c55;
+            --color-blue-purple: #772ce8;
+            --color-header: #121212E0;
+            --color-dark-blue: #2c3e50;
+            --color-light-blue: #C3D6EC;
+            --color-light-bg: #FAFAFA;
+            --color-dark-bg: #202020;
+            --color-lvl-1: #202020;
+            --color-lvl-2: #404040;
+            --color-lvl-3: #606060;
+            --color-lvl-4: #808080;
+            --color-lvl-5: #a0a0a0;
+            --color-lvl-6: #c0c0c0;
+            --color-lvl-7: #e0e0e0;
+            --font-base: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+            --font-display: "Roobert","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+        :root[data-theme='light']{
+            --color-text: var(--color-dark-blue);
+            --color-background: var(--color-light-bg);
+            --color-background-hover: var(--color-lvl-7);
+            --color-scroll: var(--color-lvl-6);
+
+            --color-bg-tag: var(--color-lvl-7);
+            --color-text-tag: var(--color-dark-blue);
+            --color-bg-tag-active: var(--color-dark-blue);
+            --color-text-tag-active: var(--color-lvl-7);
+
+            --shadow-base: 0 0 5px 0 var(--color-lvl-5);
+        }
+        :root[data-theme='dark']{
+            --color-text: var(--color-light-blue);
+            --color-background: var(--color-dark-bg);
+            --color-background-hover: var(--color-lvl-2);
+            --color-scroll: var(--color-lvl-2);
+
+            --color-bg-tag: var(--color-dark-blue);
+            --color-text-tag: var(--color-light-bg);
+            --color-bg-tag-active: var(--color-light-bg);
+            --color-text-tag-active: var(--color-dark-blue);
+
+            --shadow-base: 0 0 5px 0 var(--color-lvl-2);
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body{
+            font-family: var(--font-base);
+            font-size: 16px;
+        }
+        #header{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+        }
+        #wrapper{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            display: flex;
+        }
+        #sidebar{
+            margin-top: 60px;
+        }
+        #page{
+            padding-top: 60px;
+            flex-grow: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        #notify-box{
+            position: absolute;
+            top: 60px;
+            right: 200px;
+            width: 400px;
+            max-height: 600px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-base);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+</noscript>
+    <div id="wrapper">
+        <div id="sidebar"></div>
+        <div id="page"></div>
+    </div>
+    <div id="header"></div>
+</body>
 </html>

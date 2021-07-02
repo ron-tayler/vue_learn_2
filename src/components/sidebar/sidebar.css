@@ -1,0 +1,10 @@
+#sidebar{
+    background: var(--color-background);
+    border-right: var(--color-lvl-4) solid 2px;
+}
+.sidebar-el{
+    padding: 10px;
+}
+.sidebar-el:hover{
+    background: var(--color-background-hover);
+}

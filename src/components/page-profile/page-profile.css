@@ -1,0 +1,103 @@
+.page-profile{}
+:root[data-theme='light'] #profile-banner-box{
+    background: #43ded1;
+}
+:root[data-theme='dark'] #profile-banner-box{
+    background: #001f1c;
+}
+#profile-banner-box{
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+.profile-banner-text{
+    color: #fff4;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    font-size: 68px;
+    position: absolute;
+    top:-30px;
+    left:-30px;
+    right:-30px;
+    bottom:-30px;
+    user-select: none;
+}
+.profile-header-box{
+    position: relative;
+    width: max-content;
+}
+.profile-header-notify{
+    background: var(--color-background);
+    box-shadow: var(--shadow-base);
+    color: var(--color-text);
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.profile-header-stream{
+    width: max-content;
+    height: max-content;
+    display: flex;
+}
+.profile-header-stream-info{
+    background: var(--color-background);
+    box-shadow: var(--shadow-base);
+    color: var(--color-text);
+    align-items: stretch;
+    width: 300px;
+    height: 300px;
+    margin-right: 20px;
+    padding: 10px;
+}
+.profile-header-stream-video{
+    background: var(--color-background);
+    box-shadow: var(--shadow-base);
+    height: 300px;
+    width: 533px;
+}
+
+
+#profile-nav-box{
+    background: var(--color-background);
+    color: var(--color-text);
+    width: 100%;
+    padding: 20px;
+}
+.profile-nav-top{
+    height: 70px;
+    display: flex;
+}
+.profile-avatar-box{
+    width: 70px;
+    height: 70px;
+    background: #fad677;
+    border-radius: 60px;
+}
+.profile-info-box{
+    align-self: stretch;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.profile-info-name{
+    font-size: 22px;
+}
+.profile-info-sub .text-count-video{
+    margin-left: 10px;
+}
+.profile-info-sub .count{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#profile-body-box{
+    background: #fad677;
+    width: 100%;
+    overflow: hidden;
+}

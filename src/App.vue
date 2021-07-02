@@ -1,28 +1,26 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <!--    <keep-alive include="">-->
+    <router-view id="page"/>
+    <!--    </keep-alive>-->
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        metaInfo: {
+            titleTemplate:(title)=>(title?('localhost | '+title):'localhost')
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    #page::-webkit-scrollbar {
+        width: 8px;
+    }
+    #page::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: var(--color-lvl-4);
+    }
+    #page::-webkit-scrollbar-button:vertical:start {
+        height: 60px;
+    }
 </style>

@@ -1,12 +1,17 @@
 <template>
-    <div :id="id" class="page-profile">
+    <div :id="id" class="page-profile" :key="user_id">
         <div id="profile-banner-box">
             <div class="profile-banner-text">
                 {{fillNickName}}
             </div>
             <div class="profile-header-box">
                 <div class="profile-header-notify">
-                    Уведомление
+                    <span>Воспользуйтесь расписанием для своих трансляций</span>
+                    <div class="btn-group">
+                        <button class="btn btn-blue">Перейти</button>
+                        <button class="btn btn-close">X</button>
+                    </div>
+
                 </div>
                 <div class="profile-header-stream">
                     <div class="profile-header-stream-info">
@@ -20,26 +25,69 @@
         </div>
         <div id="profile-nav-box">
             <div class="profile-nav-top">
-                <div class="profile-avatar-box"></div>
-                <div class="profile-info-box">
-                    <div class="profile-info-name">Ron_Tayler</div>
-                    <div class="profile-info-sub">
-                        <span class="text-count-sub"><span class="count">365</span> Отслеживают </span>
-                        <span class="text-count-video"><span class="count">78</span> Видео</span>
+                <div class="profile-nav-top-left">
+                    <div class="profile-avatar-box">
+                        <div class="profile-avatar-badge">В эфире</div>
+                        <img :src="user.img" alt="avatar">
+                    </div>
+                    <div class="profile-info-box">
+                        <div class="profile-info-name">{{user.name}}</div>
+                        <div class="profile-info-sub">
+                            <span class="text-count-sub">
+                                <span class="count">{{user.track_count}}</span>
+                                <span> фолловеров</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="profile-btn-box">
-                    <div class="btn btn-coral">МЕНЕДЖЕР КУРСОВ</div>
-                    <div class="btn btn-blue">НАСТРОИТЬ КАНАЛ</div>
-                    <div class="btn btn-blue">НАСТРОИТЬ КАНАЛ</div>
+                <div class="profile-nav-top-right">
+                    <div v-if="user_id===$store.getters.getUserId"
+                         class="profile-btn-box">
+                        <div class="btn btn-coral">менеджер курсов</div>
+                        <div class="btn btn-blue">настроить канал</div>
+                        <div class="btn btn-light">
+                            <fa-icon icon="ellipsis-v"></fa-icon>
+                        </div>
+                    </div>
+                    <div v-else class="profile-btn-box">
+                        <div class="btn"
+                             :class="{'btn-blue':!user.track,
+                             'btn-light':user.track}"
+                             @click="btnHeart">
+                            <fa-icon icon="heart"></fa-icon>
+                            <span v-if="!user.track"> Отслеживать</span>
+                        </div>
+                        <div class="btn btn-light"
+                             v-if="user.track"
+                             @click="btnBell">
+                            <fa-icon v-if="user.ball" icon="bell"></fa-icon>
+                            <fa-icon v-else icon="bell-slash"></fa-icon>
+                        </div>
+                        <div class="btn"
+                             v-if="!user.subscribe"
+                             :class="{'btn-coral':!user.subscribe,
+                             'btn-light':user.subscribe}"
+                             @click="btnSub">
+                            <span>Подписаться</span>
+                        </div>
+                        <div class="btn btn-light" @click="btnOther">
+                            <fa-icon icon="ellipsis-v"></fa-icon>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="profile-nav-bottom"></div>
+            <div class="profile-nav-bottom">
+                <ul class="profile-nav-tabs">
+                    <li class="profile-nav-tab"
+                        v-for="(tab,i) in filterTabs"
+                        :key="i"
+                        :class="{active:(active_tab===i)}"
+                        @click="clickTab(i)">{{tab.name}}</li>
+                </ul>
+            </div>
         </div>
         <div id="profile-body-box">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque beatae consequatur deserunt dignissimos dolorem ducimus earum est illo illum impedit, ipsam ipsum minus modi mollitia nesciunt pariatur perferendis porro provident quas qui reprehenderit repudiandae saepe sapiente, sequi sit velit? Accusamus architecto asperiores autem deleniti facere hic illo iste molestiae tempora? Architecto autem consequuntur cupiditate dolore earum eligendi enim harum, illum ipsum itaque laboriosam nam neque officiis quam reiciendis! A alias aperiam debitis doloremque, earum eius enim est impedit in inventore laborum laudantium molestiae, nesciunt nobis odit quam quidem rem rerum sapiente sed sit tempore voluptas voluptatem. Architecto dolor enim expedita illo itaque iure quidem recusandae. Aliquid aperiam eius laboriosam maxime necessitatibus perspiciatis praesentium quibusdam repellendus tempora voluptates? Aut beatae deleniti eaque eveniet, exercitationem facilis, fugiat impedit incidunt nemo nisi non rem suscipit, tempora unde velit? Alias animi, aut cupiditate dicta dolore, doloremque dolores dolorum ducimus earum eius facilis fuga illo iusto, nam nemo omnis pariatur placeat quam quas quasi quibusdam quos saepe sit temporibus veniam? Aperiam beatae deserunt doloremque exercitationem, expedita hic magnam qui soluta voluptatem voluptatum. Accusantium alias animi beatae culpa cum cupiditate debitis delectus doloremque dolorum eaque eum fugit in ipsum iusto maiores mollitia nemo obcaecati omnis perferendis perspiciatis quam quas quisquam quod, recusandae repellat rerum sint sit, totam vel, vitae. A aliquid amet animi asperiores aut culpa dolores eaque error et maxime numquam optio perferendis praesentium, quibusdam quidem quo quod ratione reprehenderit sequi tempora? Adipisci amet architecto asperiores aspernatur commodi consectetur corporis cumque cupiditate deleniti dignissimos dolor dolore dolores dolorum enim eos et ex explicabo iste iure, magnam maxime necessitatibus nesciunt nihil, nulla odio optio pariatur perferendis praesentium quod rem suscipit tenetur ut voluptatibus? Ad aperiam blanditiis error in iure iusto modi nesciunt odio officiis porro quaerat quia, sapiente vel velit veritatis! Aperiam atque cupiditate delectus exercitationem iste, laudantium natus odio possimus quos repellendus tempore tenetur veritatis. Asperiores illo in iure molestias rem soluta, vitae! Adipisci est ex illum ipsum quam. A ab adipisci aliquam aliquid aut corporis debitis dicta distinctio doloremque dolores eaque earum eligendi esse excepturi exercitationem expedita, fugiat fugit harum hic ipsam maiores modi nesciunt nostrum, officiis pariatur porro quae quas recusandae saepe sint suscipit tempora temporibus tenetur ullam vel velit veniam. Asperiores dolore inventore quos velit vero? A adipisci atque dignissimos doloribus eius est exercitationem, iste iure maxime minus nisi officia perferendis provident reprehenderit, rerum tenetur, veniam? Ad adipisci delectus dolore et, ex fugiat ipsum labore necessitatibus nihil officia quae quis recusandae repellendus reprehenderit sit voluptates voluptatibus. Accusantium adipisci architecto asperiores autem dignissimos dolor doloribus eaque excepturi exercitationem fuga id in ipsam iste, libero maxime nisi officia provident quia quidem reiciendis sapiente sed tempora ut velit veniam veritatis voluptatum. Accusamus ad alias aliquid at cupiditate deserunt dolor earum hic impedit labore magni nihil nobis, nostrum odit qui quia recusandae rem sapiente, temporibus voluptates. Assumenda consequuntur cum deleniti earum enim impedit officiis provident tempora veritatis! Ab accusamus aspernatur cum cumque dolorum et inventore ipsa, laboriosam molestiae molestias, natus, necessitatibus nostrum odio quam quia similique ut voluptates. Accusantium corporis deleniti ex inventore modi, officia quibusdam quis rem soluta temporibus voluptate voluptates. A commodi consequatur deleniti fuga iure quasi quibusdam, vel veritatis? Ad alias architecto delectus dignissimos, dolor dolorem ducimus eligendi error est excepturi expedita explicabo facere facilis illo illum itaque nisi, numquam perspiciatis provident quaerat quisquam recusandae rerum sit? Ad asperiores atque, doloremque doloribus, fugit id illum maiores nostrum numquam perferendis quaerat sapiente! Adipisci architecto aspernatur dolorum enim fuga, incidunt ipsam iure maxime, nesciunt nulla perspiciatis, quos totam voluptate. Ad amet asperiores corporis dolor dolorum esse labore libero natus, numquam odio quae quis quo reprehenderit sint tempora ullam veritatis? Autem dolorum eaque, esse eum iure libero molestias necessitatibus nobis obcaecati optio quaerat quidem saepe vero. Consectetur eos laborum, minima officiis sed sequi veniam! Dolore, eaque ipsum iure laborum mollitia necessitatibus nemo nulla odio, pariatur praesentium quibusdam reiciendis repellendus repudiandae rerum voluptas. Ad alias aliquam aliquid aperiam asperiores beatae consectetur consequatur corporis distinctio ducimus ea eos exercitationem facilis fugiat fugit incidunt iure maxime minima molestiae nam nemo nihil, nisi numquam quas recusandae reiciendis repellat saepe sed sequi sit suscipit tempore, ullam vel veniam veritatis vero voluptates? Beatae dolores eum illo odit perspiciatis, quia. Alias aliquid corporis cum, distinctio doloremque dolores error est et eum ex in iste labore laboriosam magnam mollitia necessitatibus, neque nesciunt nobis officia omnis pariatur possimus quisquam quod ratione, rem repellendus sint sit soluta tempore ullam? Alias cum dignissimos doloribus, dolorum, eius excepturi, id ipsa laudantium minima perspiciatis quia quo repellat rerum suscipit unde! Commodi corporis dolores eaque fugiat fugit hic impedit, in ipsam itaque neque non pariatur qui quis recusandae reiciendis veniam voluptatibus! Aliquid autem eius est et ex minus modi, nobis pariatur quisquam sunt, unde voluptas voluptate! Ad alias aliquid architecto at autem corporis, debitis id laudantium nihil nisi nostrum obcaecati omnis quae qui sunt veniam voluptas? Accusantium aliquam asperiores beatae consectetur doloremque, dolores eos et harum hic illo iure labore laboriosam natus officiis quidem repellat sed similique ullam voluptates voluptatum. Autem corporis, error? Ab distinctio dolor, dolorum ex facere iure maxime minima numquam odit officiis omnis quae reiciendis repudiandae sed sequi similique tempora ut voluptas voluptatibus voluptatum. Consequatur deleniti ea eos error explicabo modi molestiae quasi sequi voluptatem voluptates! Aspernatur corporis deleniti dicta earum eius exercitationem fugit impedit in maxime nesciunt, nisi, praesentium quidem repudiandae suscipit tempora veritatis voluptatum! Ad aliquid animi asperiores debitis dolores ea eaque error laborum minima mollitia nesciunt non nulla numquam perferendis, porro provident reiciendis sit sunt, veniam voluptatum. Accusamus accusantium ad consectetur consequuntur distinctio dolor, eos hic id incidunt iusto maiores praesentium quae, quibusdam ratione saepe totam veniam. Consectetur dolorum enim esse fuga inventore minima nobis nostrum numquam quis velit! Amet aspernatur cupiditate dicta dolor eaque impedit inventore obcaecati tempora veritatis? Ad adipisci aliquam aperiam architecto, blanditiis debitis distinctio dolorum eius eos et ex explicabo impedit libero magni minima molestiae necessitatibus omnis perspiciatis placeat possimus reiciendis rerum ut velit. Autem dolor expedita iste minus natus nisi placeat sint tempore totam vitae. Consectetur fuga ipsum maiores minus molestiae natus, non, numquam officia quam reiciendis repellendus repudiandae vel vero? Accusamus aliquam amet blanditiis culpa cumque deserunt distinctio dolores dolorum ex explicabo facere id illo impedit ipsam iusto nemo neque nisi non nulla numquam obcaecati odit omnis placeat possimus quos rem reprehenderit, ut. Ab ad assumenda dolor esse, est inventore nam quis sit! Aspernatur, consequuntur ducimus error fuga impedit nostrum. Aliquid, minus obcaecati! Ab aliquam, assumenda atque consequuntur delectus doloribus eligendi error impedit labore laboriosam libero magni nihil nisi nobis provident quam quas qui, quia quo quod quos tempora vel vero! Cupiditate distinctio dolor dolore error esse expedita itaque necessitatibus nemo, nesciunt, nisi quam reprehenderit sed? Architecto asperiores beatae blanditiis consectetur debitis eaque earum eius enim, fugiat hic id iure, iusto minima natus nemo nostrum, numquam perferendis quasi quibusdam rerum sint suscipit tempora temporibus velit voluptate! Autem delectus, dicta dolore dolorem ducimus eaque enim error eveniet ex, facilis maxime mollitia neque nobis optio quia quod reprehenderit vel. Aliquam autem blanditiis corporis culpa cum cumque cupiditate debitis delectus deserunt dolore enim fugiat iusto, labore libero necessitatibus nemo neque nesciunt officia quisquam quos ratione sed, unde ut vel voluptatem? Ab aliquam at, doloribus necessitatibus quos similique, sit sunt temporibus, tenetur totam unde vel vitae voluptatum. Alias aliquam asperiores assumenda eos illum ipsa ipsum minima, minus nesciunt non obcaecati repellat repudiandae tempora ullam voluptatum. Ab aliquid aperiam consectetur earum explicabo harum mollitia officiis perferendis placeat. Accusamus amet aperiam ea enim ex magni maiores, nemo quasi repudiandae saepe sequi velit? Accusantium, commodi corporis dicta distinctio dolorem doloremque esse eveniet fugit illum impedit ipsam labore minima nam nemo nisi nobis odio odit placeat possimus praesentium provident quaerat quas quasi quia quidem quo, rem repellat repellendus saepe sequi sunt, veritatis voluptas voluptatibus? Cumque dignissimos ducimus, eveniet excepturi inventore, ipsam laudantium omnis porro quaerat quas, qui quia sed ut vel velit. Ab amet autem consequuntur culpa doloribus hic impedit iste magnam nesciunt nobis nulla, porro praesentium quisquam quod sint sit suscipit vero. Amet aperiam atque autem consectetur consequatur consequuntur cum cumque earum eius exercitationem fuga harum impedit itaque maxime modi mollitia nisi, nobis non quia quis rem repellat sequi temporibus velit vitae voluptates voluptatum. Accusamus ad eligendi expedita non perspiciatis provident quis repellat tempore! A accusamus, atque aut dolor ducimus excepturi impedit labore, magni, maiores maxime modi nam provident quo sapiente sequi sint suscipit. A aliquam debitis ea eum iste laudantium quae sapiente veritatis vitae voluptatem? Commodi culpa cum doloremque excepturi hic nobis totam voluptatem voluptatum? Ab architecto aspernatur at atque blanditiis consequatur consequuntur dicta dolor dolore dolorem ducimus ea est et exercitationem harum illo illum in, iusto minima nam natus nihil nobis placeat porro praesentium quaerat quibusdam quidem quos ratione, reiciendis reprehenderit sed sunt suscipit unde vero voluptatem voluptates. Accusantium adipisci aliquid amet doloribus ex labore placeat praesentium, rerum tempora unde! Aliquid asperiores at consequatur dolor eaque earum et ex facere illum inventore labore magnam, minima molestias, neque nisi nobis odit pariatur quidem reiciendis rem sed sit temporibus. Ad aspernatur, delectus dolore doloremque hic in incidunt iste itaque iure laborum minus, nostrum officia omnis quam, quo repudiandae unde? Accusantium delectus deleniti eius, enim eos est et ex explicabo hic, id in ipsa ipsam magnam minus modi nemo nobis non nostrum nulla officiis placeat quibusdam quo ratione recusandae totam veniam veritatis! Ad alias blanditiis ea eos, error incidunt laborum minima nam, neque porro possimus provident quaerat qui reprehenderit sapiente sint tempora totam voluptatem? Laborum magni maiores minima natus nihil nobis non odit reiciendis sapiente suscipit. A ab, accusamus autem consectetur deserunt dolores ea eius eligendi enim eveniet explicabo hic illo illum, impedit iste iure laboriosam laudantium magnam magni maiores maxime minima minus molestiae non nulla odit officiis quaerat quam reprehenderit sapiente similique soluta suscipit totam unde velit veniam veritatis. Architecto autem culpa cumque cupiditate debitis distinctio dolor ducimus earum facilis fugiat incidunt ipsum itaque iusto magnam magni maiores minus molestiae nesciunt nihil odio, officia porro quae repellendus repudiandae sed tenetur vel veniam. Commodi corporis, cumque, error illum ipsam minus quas quisquam quo reiciendis sapiente voluptate voluptatem. Dolorem, ducimus expedita facere facilis ipsum nemo sapiente? Animi beatae commodi debitis deleniti deserunt dicta doloribus eligendi enim eveniet harum incidunt itaque iusto laboriosam, laborum, magnam molestias quisquam repudiandae, sapiente sed sequi sint soluta voluptas voluptate? Alias corporis cupiditate deserunt doloremque eligendi maiores nesciunt nobis, obcaecati tenetur ut! Cupiditate debitis doloribus ea eos eum ipsa, iusto libero quia voluptas. Ea eligendi expedita nesciunt non nostrum possimus ullam veniam. Accusamus beatae dolores ipsum minima, non provident quae quo tempora! Aliquid architecto cum dolorem est ex, facilis hic incidunt inventore ipsam itaque iusto magni nemo, obcaecati provident quas quibusdam quos recusandae sapiente suscipit veritatis. Architecto id maiores quo sint! Aliquid optio repellendus vitae. Accusamus adipisci aliquid aspernatur delectus explicabo, facilis fugit labore magni odio placeat praesentium tempore velit vitae! Atque consectetur cum deleniti deserunt dicta distinctio dolore eum eveniet excepturi facere fugiat impedit iusto, minus molestias nam necessitatibus nihil nostrum odio officia officiis optio, pariatur porro quaerat quas qui rem ut voluptas? Amet asperiores aut autem consectetur consequatur consequuntur corporis cumque deleniti doloribus eaque eligendi explicabo facilis id ipsa iure labore magnam necessitatibus nisi non perspiciatis possimus praesentium quia recusandae sed, tempore velit vitae voluptatibus. At eligendi fugiat fugit laborum natus numquam reprehenderit ullam vitae. Accusantium amet asperiores at debitis delectus dicta, eveniet ex exercitationem expedita, fugit iusto magni molestias necessitatibus nesciunt praesentium quibusdam quis quo quos reiciendis velit veritatis, vero voluptates voluptatum! Commodi cupiditate earum, enim eveniet nesciunt quod totam voluptatum! Accusamus aperiam autem consequatur culpa eaque facere, fuga fugit hic ipsam ipsum itaque iure libero magni molestiae non nostrum odit quas qui quidem quis quo rem repellat repellendus saepe sunt ut veniam voluptas. Aliquid, assumenda at atque consequatur dolore doloremque eius exercitationem fugiat fugit id inventore ipsa iste laudantium minima minus nostrum nulla obcaecati odio, placeat possimus quam quia quod rem repudiandae rerum saepe, sequi soluta sunt ullam vel veniam veritatis voluptate voluptatem. Eligendi eum rem saepe sit? Cumque ex incidunt natus quos suscipit. At ex modi repudiandae?
-            </p>
+            <component class="profile-body" :is="filterTabs[active_tab].component" :user_id="user_id"></component>
         </div>
     </div>
 </template>

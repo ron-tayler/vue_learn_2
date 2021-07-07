@@ -11,16 +11,4 @@
         }
     }
 </script>
-
-<style>
-    #page::-webkit-scrollbar {
-        width: 8px;
-    }
-    #page::-webkit-scrollbar-thumb {
-        border-radius: 8px;
-        background-color: var(--color-lvl-4);
-    }
-    #page::-webkit-scrollbar-button:vertical:start {
-        height: 60px;
-    }
-</style>
+<style src="./index.css" />

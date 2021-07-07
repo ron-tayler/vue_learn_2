@@ -1,0 +1,76 @@
+#page::-webkit-scrollbar {
+    width: 8px;
+}
+#page::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--color-lvl-4);
+}
+#page::-webkit-scrollbar-button:vertical:start {
+    height: 60px;
+}
+
+.card-block{
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.btn{
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: var(--color-lvl-7);
+    border: var(--color-lvl-7);
+    cursor: pointer;
+    user-select: none;
+}
+.btn-light{
+    background: transparent;
+    border: transparent;
+}
+.btn-light:hover{
+    background: var(--color-lvl-7);
+    border: var(--color-lvl-7);
+}
+.btn-coral{
+    color: #fff;
+    background: var(--color-yir-coral);
+    border: var(--color-yir-coral);
+}
+.btn-blue{
+    color: #fff;
+    background: var(--color-yir-blue);
+    border: var(--color-yir-blue);
+}
+.btn-gray{
+    color: #000;
+    background: var(--color-lvl-5);
+    border: var(--color-lvl-5);
+}
+
+@font-face {
+    font-family: "Roobert";
+    src: url("~@/assets/Roobert-SemiBold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Roobert";
+    src: url("~@/assets/Roobert-Bold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Inter";
+    src: url("~@/assets/inter-latin-variable-wghtOnly-normal.woff2") format("woff2");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: cyrillic,"Inter";
+    src: url("~@/assets/inter-cyrillic-variable-wghtOnly-normal.woff2") format("woff2");
+    font-style: normal;
+    font-weight: normal;
+}

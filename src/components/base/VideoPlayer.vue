@@ -21,7 +21,7 @@
         }),
         mounted() {
             for(let opt in this.$options.DEFAULT_OPTIONS){
-                if(!(this.options[opt])) this.options[opt] = this.$options.DEFAULT_OPTIONS[opt];
+                this.options[opt] = this.options[opt]??this.$options.DEFAULT_OPTIONS[opt];
             }
             this.player = video_js(this.$refs.videoPlayer, this.options, function(){});
             this.player.on('error',()=>{

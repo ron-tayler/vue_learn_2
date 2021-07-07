@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import PageMe from './components/page-me/page-me.vue'
 import PageHome from './components/page-home/page-home.vue'
 import PageProfile from './components/page-profile/page-profile.vue'
+import PageNotFound from './components/page-not-found/not-found.vue'
 
 Vue.use(VueRouter)
 
@@ -11,36 +12,39 @@ const routes = [
         path: '/',
         name: 'home',
         component: PageHome
-    },
-    {
+    },{
         path: '/me',
         name: 'me',
         component: PageMe
-    },
-    {
-        path: '/profile',
-        name: 'profile',
+    },{
+        path: '/user/:id/:tab?',
+        name: 'user',
         component: PageProfile
-    },
-    {
+    },{
+        path: '/404',
+        name: "not-found",
+        component: PageNotFound,
+    },{
         path: "*",
         meta:{
-            redirect_out:true
+            redirect_out:false
         }
     }
-]
+];
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
 })
-router.beforeEach((to, from, next) => {
-    if(to.matched.some(r=>r.meta.redirect_out)){
-        window.location = 'https://youinroll.com'+to.path;
-    }else{
-        next()
+router.beforeEach(
+    (to, from, next) => {
+        if(to.matched.some(r=>r.meta.redirect_out)){
+            window.location = 'https://youinroll.com'+to.path;
+        }else{
+            next()
+        }
     }
-})
+)
 
 export default router

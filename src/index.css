@@ -13,8 +13,6 @@
     background: #fff;
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
-    margin-right: 20px;
 }
 
 .btn{
@@ -48,6 +46,24 @@
     color: #000;
     background: var(--color-lvl-5);
     border: var(--color-lvl-5);
+}
+
+.dropdown-box{
+    position: relative;
+}
+.dropdown-menu{
+    position: absolute;
+    top: calc(100% + 5px);
+}
+.dropdown-center{
+    left: 50%;
+    transform: translateX(-50%);
+}
+.dropdown-left{
+    right: 0;
+}
+.dropdown-right{
+    left: 0;
 }
 
 @font-face {

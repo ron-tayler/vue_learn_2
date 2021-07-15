@@ -77,10 +77,10 @@
     background: var(--color-background);
     color: var(--color-text);
     width: 100%;
-    padding: 20px 20px 0;
+    padding: 10px 20px 0;
     background: #fff;
     position: sticky;
-    top: 0;
+    top: -90px;
     z-index: 1;
 }
 .profile-nav-top{
@@ -168,7 +168,9 @@
     padding: 20px;
 }
 .profile-body{}
-.video-carousel{}
+.video-carousel+.video-carousel{
+    margin-top: 20px;
+}
 .video-carousel-header{
     font-size: 24px;
     color: var(--color-text);

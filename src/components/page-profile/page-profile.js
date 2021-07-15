@@ -138,7 +138,6 @@ export default {
 
     },
     mounted(){
-        window.vue_profile_page = this;
         this.updateSelectTab(this.$route.params.tab)
     }
 }

@@ -1,0 +1,155 @@
+.timeline-btn-box {
+    margin-bottom: 10px;
+}
+.timeline-date-between{
+    font-weight: bold;
+}
+.timeline-btn-box > * {
+    margin-right: 10px;
+}
+.timeline-grid{
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    /*border: 1px solid var(--color-lvl-4);*/
+    border-radius: 10px;
+    box-shadow: var(--shadow-base);
+}
+.timeline-timezone{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #888888;
+    height: 40px;
+    border-bottom: 1px solid var(--color-lvl-4);
+}
+.timeline-hours-line{
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 40px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--color-lvl-4);
+}
+.timeline-hours-line .hours-box{
+    flex-grow: 1;
+    padding-left:5px;
+    flex-basis: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.timeline-hours-line .hours-box.active{
+    background: #f0f0f0;
+}
+.timeline-hours-line .hours-box.active:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--color-yir-purple);
+}
+.timeline-day-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: bold;
+    background: #f0f0f0;
+}
+.timeline-day-info>*{
+    margin-bottom: 5px;
+}
+.timeline-day-line{
+    height: 100px;
+    background: #ffffff;
+    position: relative;
+}
+.timeline-day-info.active{
+    background: #e0e0e0;
+    border-right: 3px solid var(--color-yir-purple);
+}
+.timeline-day-line.active{
+    background: #f0f0f0;
+}
+.timeline-card{
+    position: absolute;
+    padding: 5px 10px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    top: 5px;
+    bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: hidden;
+
+    &-next-enter-active,
+    &-next-leave-active,
+    &-back-enter-active,
+    &-back-leave-active
+    {@extend %timeline-card--active}
+    &-next{
+        &-enter{@extend %timeline-card--right; &-to{@extend %timeline-card--center}}
+        &-leave{@extend %timeline-card--center; &-to{@extend %timeline-card--left}}
+    }
+    &-back{
+        &-enter{@extend %timeline-card--left; &-to{@extend %timeline-card--center}}
+        &-leave{@extend %timeline-card--center; &-to{@extend %timeline-card--right}}
+    }
+}
+%timeline-card--active{
+     transition: all .5s;
+}
+%timeline-card--left{
+    transform: translateX(-200px);
+    opacity: 0;
+}
+%timeline-card--right{
+    transform: translateX(200px);
+    opacity: 0;
+}
+%timeline-card--center{
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.timeline-card-name{
+    font-weight: bold;
+}
+.timeline-card-category{
+    font-size: 14px;
+    color: var(--color-yir-purple);
+}
+.timeline-card-view{
+    font-size: 14px;
+}
+.timeline-card-time{
+    border-left: 4px solid var(--color-yir-purple);
+    padding-left: 5px;
+}
+.timeline-card-img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 160px;
+}
+.timeline-card-img img{
+    height: 100%;
+    width: 100%;
+}
+.timeline-calendar-box{
+    width: 300px;
+    /*height: 200px;*/
+    background: #fff;
+    box-shadow: var(--shadow-base);
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 1;
+}
+
+

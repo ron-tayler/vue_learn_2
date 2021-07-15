@@ -11,7 +11,6 @@
                         <button class="btn btn-blue">Перейти</button>
                         <button class="btn btn-close">X</button>
                     </div>
-
                 </div>
                 <div class="profile-header-stream">
                     <div class="profile-header-stream-info">

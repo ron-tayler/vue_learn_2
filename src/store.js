@@ -28,10 +28,25 @@ const store = new Vuex.Store({
                 videos_count:4, // Кол-во видео
                 streams:[
                     {
-                        name:'Стрим 3',
+                        name:'Стрим 3.2',
                         img:'https://dummyimage.com/300x169/fad677/ffffff&text=Стрим+3',
                         viewers:1067, // Зрителей
+                        views:1710, // Просмотров
                         on_air:true,
+                        UTC_timestamp_start:new Date(2021,6,8,17).valueOf(),
+                        length_seconds:60*60*4,
+                        user:{
+                            name:'Xatikont',
+                            img:'https://dummyimage.com/100/43ded1/ffffff&text=X'
+                        }
+                    },{
+                        name:'Стрим 3.1',
+                        img:'https://dummyimage.com/300x169/fad677/ffffff&text=Стрим+3',
+                        viewers:1067, // Зрителей
+                        views:1710, // Просмотров
+                        on_air:true,
+                        UTC_timestamp_start:new Date(2021,6,8,10).valueOf(),
+                        length_seconds:60*60*4,
                         user:{
                             name:'Xatikont',
                             img:'https://dummyimage.com/100/43ded1/ffffff&text=X'
@@ -39,7 +54,10 @@ const store = new Vuex.Store({
                     },{
                         name:'Стрим 2',
                         img:'https://dummyimage.com/300x169/0e9bd8/ffffff&text=Стрим+2',
+                        viewers:0,
                         views:754, // Просмотров
+                        UTC_timestamp_start:new Date(2021,5,28,14).valueOf(),
+                        length_seconds:60*60*6,
                         user:{
                             name:'Xatikont',
                             img:'https://dummyimage.com/100/43ded1/ffffff&text=X'
@@ -47,7 +65,10 @@ const store = new Vuex.Store({
                     },{
                         name:'Стрим 1',
                         img:'https://dummyimage.com/300x169/530a09/ffffff&text=Стрим+1',
+                        viewers:0,
                         views:1413, // Просмотров
+                        UTC_timestamp_start:new Date(2021,6,5,16).valueOf(),
+                        length_seconds:60*60*2,
                         user:{
                             name:'Xatikont',
                             img:'https://dummyimage.com/100/43ded1/ffffff&text=X'
@@ -120,6 +141,9 @@ const store = new Vuex.Store({
         }
     },
     getters:{
+        getLang(){
+            return 'ru'
+        },
         getUserId(state){
             return state.user
         },

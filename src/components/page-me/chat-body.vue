@@ -1,9 +1,41 @@
 <template>
     <div class="chat-body">
         <div ref="chatScroll" class="chat-msg-scroll" @scroll="chatScroll">
+            <div class="chat-date">
+                Сегодня
+            </div>
+            <div class="chat-notify">
+                Рон Тайлер создал беседу Проверка API
+            </div>
             <div class="chat-msg-box" v-for="msg in messages" :key="msg.id">
+                <div class="chat-msg__left-btn">
+                    <fa-icon icon="check-circle"></fa-icon>
+                </div>
+                <div class="chat-msg__avatar"></div>
                 <div class="chat-msg">
-                    {{msg.id}}: {{msg.message}}
+                    <div class="chat-msg__user-name">Рон Тайлер</div>
+                    <div class="chat-msg__text">{{msg.message}}</div>
+                </div>
+                <div class="chat-msg__right-btn">
+                    <fa-icon icon="reply"></fa-icon>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                </div>
+            </div>
+            <div class="chat-notify">
+                Урсул Максим присоединился
+            </div>
+            <div class="chat-msg-box active">
+                <div class="chat-msg__left-btn">
+                    <fa-icon icon="check-circle"></fa-icon>
+                </div>
+                <div class="chat-msg__avatar"></div>
+                <div class="chat-msg">
+                    <div class="chat-msg__user-name">Урсул Максим</div>
+                    <div class="chat-msg__text">Работает</div>
+                </div>
+                <div class="chat-msg__right-btn">
+                    <fa-icon icon="reply"></fa-icon>
+                    <fa-icon icon="chevron-down"></fa-icon>
                 </div>
             </div>
         </div>

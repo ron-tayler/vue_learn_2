@@ -5,7 +5,7 @@
                 <div class="chats-el-img"></div>
                 <div class="chats-el-info">
                     <div class="chats-el-title">
-                        <span>Стрим #{{el.title}}</span>
+                        <span>{{el.title}}</span>
                     </div>
                     <div class="chats-el-last-msg">
                         <span>{{el.last_msg}}</span>
@@ -17,7 +17,7 @@
             <keep-alive>
                 <chat-body
                     v-if="select_chat_id"
-                    :messages="chats[select_chat_id].messages"
+                    :messages="chats.filter(el=>el.id===select_chat_id)[0].messages"
                     :key="select_chat_id"
                     :chatId="select_chat_id"
                     @scrollTop="scrollTop"
@@ -49,31 +49,24 @@
             async scrollTop(id){
                 let count = this.chats[id].messages.length;
                 let messages = await API.getLastMessages4peerId(id,count)??[];
-                this.chats[id].messages = [...messages.reverse(),...this.chats[id].messages];
+                this.chats.filter(el=>el.id===id)[0].messages = [...messages.reverse(),...this.chats.filter(el=>el.id===id)[0].messages];
             }
         },
         watch:{
             async select_chat_id(id){
-                if(!( id>0 && this.chats && this.chats[id].messages?.length===0 )) return;
-                this.chats[id].messages = (await API.getLastMessages4peerId(id)).reverse()??[];
+                if(!( id>0 && this.chats && this.chats.filter(el=>el.id===id)[0].messages?.length===0 )) return;
+                this.chats.filter(el=>el.id===id)[0].messages = (await API.getLastMessages4peerId(id)).reverse()??[];
+
             }
         },
         mounted() {
+            window.rtf_me = this;
             this.chats = API.getChats();
             for (let chat_id in this.chats){
-                let chat = this.chats[chat_id];
+                let chat = this.chats.filter(el=>el.id===chat_id)[0];
                 API.getLastMessages4peerId(chat.id).then((messages)=>{
                     let ts = 0;
                     if(messages.length>0) ts = messages[0].id;
-                    setTimeout(function longTO() {
-                        API.msgLP(chat.id,ts)
-                            .then((messages)=>{
-                                if(messages && typeof messages == 'object' && messages.length>0){
-                                    ts = messages[messages.length - 1].id;
-                                }
-                                setTimeout(longTO,0);
-                            })
-                    },0);
                 });
             }
             window.addEventListener('keyup',this.keyup)

@@ -1,30 +1,20 @@
 export function getChats(){
-    return {
-        101:{
-            id:101,
-            title: 101,
-            last_msg: 'Это первый стрим',
+    return [
+        {
+            type:'u',
+            id:1,
+            title: 'Никита Вадимович',
+            last_msg: '',
             messages: []
         },
-        100:{
-            id:100,
-            title: 100,
-            last_msg: 'Как называется игра которую стримишь очень интересно',
-            messages: []
-        },
-        123:{
-            id:123,
-            title: 123,
-            last_msg: 'Привет всем',
-            messages: []
-        },
-        125:{
-            id:125,
-            title: 125,
-            last_msg: 'Тестирую',
+        {
+            type:'u',
+            id:953,
+            title: 'Урсул Максим',
+            last_msg: '',
             messages: []
         }
-    }
+    ]
 }
 
 /**
@@ -41,8 +31,9 @@ export function getLastMessages4peerId(peer_id,offset=0){
 
     let url = new URL('https://youinroll.com/message/getAll');
     url.searchParams.set('api','1.0');
-    url.searchParams.set('peer_id','s'+peer_id);
+    url.searchParams.set('peer_id','u'+peer_id);
     url.searchParams.set('offset',offset.toString());
+    url.searchParams.set('access_token','4376a1039a6ec7a649a8f7a339b3a5691c53dffb766963050ee3e019031646f7a71c6537c296dff1b836975a97aabb4bd2af6723c9d7a3c69bc5f19e365a21c4');
 
     return fetch(url.href)
     .then(r=>r.json())

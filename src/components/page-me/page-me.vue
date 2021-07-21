@@ -21,6 +21,7 @@
                     :key="select_chat_id"
                     :chatId="select_chat_id"
                     @scrollTop="scrollTop"
+                    @msgSend="msgSend"
                 ></chat-body>
             </keep-alive>
         </div>
@@ -37,7 +38,8 @@
         data:()=>({
             user_id:0,
             select_chat_id: 0,
-            chats:null
+            chats:null,
+            LPs:[]
         }),
         methods:{
             keyup(e){
@@ -50,6 +52,10 @@
                 let count = this.chats[id].messages.length;
                 let messages = await API.getLastMessages4peerId(id,count)??[];
                 this.chats.filter(el=>el.id===id)[0].messages = [...messages.reverse(),...this.chats.filter(el=>el.id===id)[0].messages];
+            },
+            msgSend(data){
+                let chat = this.chats.filter(el=>el.id==data.chatId)[0];
+                API.messageSend(chat.type+''+chat.id,data.text);
             }
         },
         watch:{
@@ -59,19 +65,33 @@
 
             }
         },
-        mounted() {
+        async mounted() {
             window.rtf_me = this;
-            this.chats = API.getChats();
-            for (let chat_id in this.chats){
-                let chat = this.chats.filter(el=>el.id===chat_id)[0];
-                API.getLastMessages4peerId(chat.id).then((messages)=>{
-                    let ts = 0;
-                    if(messages.length>0) ts = messages[0].id;
-                });
-            }
             window.addEventListener('keyup',this.keyup)
+
+            // Получить список чатов(limit 25) пользователя по токену в месте с этим приходят последние сообщения(limit 25) каждого чата
+            this.chats = await API.getChats();
+            // Запустить LP'ы
+            for (let i =0;this.chats.length>i;i++){
+                (()=>{
+                    let chat = this.chats[i];
+                    let ts = 0;
+                    if(chat.messages.length>0) ts = chat.messages[chat.messages.length-1].id;
+                    setTimeout(function longTO() {
+                        API.msgLP(chat.type+''+chat.id,ts)
+                            .then((messages)=>{
+                                if(messages && typeof messages == 'object' && messages.length>0){
+                                    ts = messages[messages.length - 1].id;
+                                    chat.messages.push(...messages);
+                                }
+                                setTimeout(longTO,0);
+                            })
+                    },0);
+                })()
+            }
         },
         destroyed(){
+            // Завершить все LP'ы
             window.removeEventListener('keyup',this.keyup)
         }
     }

@@ -4,45 +4,38 @@
             <div class="chat-date">
                 Сегодня
             </div>
-            <div class="chat-notify">
-                Рон Тайлер создал беседу Проверка API
-            </div>
-            <div class="chat-msg-box" v-for="msg in messages" :key="msg.id">
-                <div class="chat-msg__left-btn">
-                    <fa-icon icon="check-circle"></fa-icon>
-                </div>
-                <div class="chat-msg__avatar"></div>
-                <div class="chat-msg">
-                    <div class="chat-msg__user-name">Рон Тайлер</div>
-                    <div class="chat-msg__text">{{msg.message}}</div>
-                </div>
-                <div class="chat-msg__right-btn">
-                    <fa-icon icon="reply"></fa-icon>
-                    <fa-icon icon="chevron-down"></fa-icon>
-                </div>
-            </div>
-            <div class="chat-notify">
-                Урсул Максим присоединился
-            </div>
-            <div class="chat-msg-box active">
-                <div class="chat-msg__left-btn">
-                    <fa-icon icon="check-circle"></fa-icon>
-                </div>
-                <div class="chat-msg__avatar"></div>
-                <div class="chat-msg">
-                    <div class="chat-msg__user-name">Урсул Максим</div>
-                    <div class="chat-msg__text">Работает</div>
-                </div>
-                <div class="chat-msg__right-btn">
-                    <fa-icon icon="reply"></fa-icon>
-                    <fa-icon icon="chevron-down"></fa-icon>
-                </div>
+            <div class="chat-msg-box" :class="{notify:(msg.type==='notify')}" v-for="msg in messages" :key="msg.id">
+                <template v-if="msg.parent.length>0">
+                    <template v-for="(parent,i) in msg.parent">
+                        <template v-if="parent.type==='notify'">
+                            <div class="chat-notify" :key="i">
+                                <template v-if="parent.code==='new_user'">
+                                    #{{parent.user_id}} присоединился
+                                </template>
+                            </div>
+                        </template>
+                    </template>
+                </template>
+                <template v-if="msg.message!==''">
+                    <div class="chat-msg__left-btn">
+                        <fa-icon icon="check-circle"></fa-icon>
+                    </div>
+                    <div class="chat-msg__avatar"></div>
+                    <div class="chat-msg">
+                        <div class="chat-msg__user-name">{{msg.user_id}}</div>
+                        <div class="chat-msg__text">{{msg.message}}</div>
+                    </div>
+                    <div class="chat-msg__right-btn">
+                        <fa-icon icon="reply"></fa-icon>
+                        <fa-icon icon="chevron-down"></fa-icon>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="chat-msg-inputs">
             <div class="chat-msg-inputs-left"></div>
             <div class="chat-msg-input-box">
-                <input type="text" placeholder="Написать сообщение" />
+                <input type="text" placeholder="Написать сообщение" v-model="msgText" @keypress.enter="msgSend"/>
             </div>
             <div class="chat-msg-inputs-right"></div>
         </div>
@@ -58,7 +51,8 @@
         data:()=>({
             chatScroll_ScrollHeight: -1,
             chatScroll_ScrollTop: -1,
-            chatScroll_ScrollBottom: -1
+            chatScroll_ScrollBottom: -1,
+            msgText: '',
         }),
         mounted(){
             this.$once('hook:updated',function(){
@@ -108,6 +102,10 @@
             chatScrollDown(){
                 this.chatScroll_ScrollBottom = 0;
             },
+            msgSend(){
+                this.$emit('msgSend', {chatId:this.chatId,text:this.msgText});
+                this.msgText = '';
+            }
         },
         watch:{
             chatScroll_ScrollTop(newValue){

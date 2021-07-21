@@ -5,9 +5,10 @@
 </template>
 
 <script>
+    const TITLE = 'FrontEnd';
     export default {
         metaInfo: {
-            titleTemplate:(title)=>(title?('localhost | '+title):'localhost')
+            titleTemplate:(title)=>(title?(TITLE+' | '+title):TITLE)
         }
     }
 </script>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import PageMe from './components/page-me/page-me.vue'
 import PageHome from './components/page-home/page-home.vue'
 import PageProfile from './components/page-profile/page-profile.vue'
+import PageLogin from '@/components/page-login/page-login.vue'
 import PageNotFound from './components/page-not-found/not-found.vue'
 
 Vue.use(VueRouter)
@@ -20,6 +21,10 @@ const routes = [
         path: '/user/:id/:tab?',
         name: 'user',
         component: PageProfile
+    },{
+        path: '/login',
+        name: 'login',
+        component: PageLogin
     },{
         path: '/404',
         name: "not-found",

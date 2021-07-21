@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state:{
-        user:953,
+        user:0,
+        access_token:'',
         users: [
             {
                 id:953,
@@ -146,6 +147,9 @@ const store = new Vuex.Store({
         },
         getUserId(state){
             return state.user
+        },
+        getAccessToken(state){
+            return state.access_token
         },
         getUser4id:state=>id=>{
             return state.users.find(user=>user.id===id)

@@ -4,7 +4,15 @@
             <div class="chat-date">
                 Сегодня
             </div>
-            <div class="chat-msg-box" :class="{notify:(msg.type==='notify')}" v-for="msg in messages" :key="msg.id">
+            <div class="chat-msg-box"
+                 :class="{
+                     notify:(msg.type==='notify'),
+                     active:(messages_select.indexOf(msg.id)!==-1)
+                 }"
+                 v-for="msg in messages"
+                 :key="msg.id"
+                 @click="msgSelect(msg.id)"
+            >
                 <template v-if="msg.parent.length>0">
                     <template v-for="(parent,i) in msg.parent">
                         <template v-if="parent.type==='notify'">
@@ -16,20 +24,37 @@
                         </template>
                     </template>
                 </template>
-                <template v-if="msg.message!==''">
+                <template v-if="msg.type!=='notify'">
                     <div class="chat-msg__left-btn">
                         <fa-icon icon="check-circle"></fa-icon>
                     </div>
                     <div class="chat-msg__avatar"></div>
                     <div class="chat-msg">
-                        <div class="chat-msg__user-name">{{msg.user_id}}</div>
+                        <div class="chat-msg__user-name">#{{msg.user_id}}</div>
                         <div class="chat-msg__text">{{msg.message}}</div>
+                        <template v-if="msg.parent.length">
+                            <div class="chat-msg__parent" v-for="(parent_item,i) in msg.parent" :key="i">
+                                <div class="chat-msg__user-name">#{{parent_item.user_id}}</div>
+                                <div class="chat-msg__text">{{parent_item.text}}</div>
+                                <template v-if="parent_item.parent.length">
+                                    <div class="chat-msg__parent" v-for="(parent_parent_item,i) in msg.parent" :key="i">
+                                        <div class="chat-msg__user-name">#{{parent_parent_item.user_id}}</div>
+                                        <div class="chat-msg__text">{{parent_parent_item.text}}</div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
                     <div class="chat-msg__right-btn">
-                        <fa-icon icon="reply"></fa-icon>
+                        <fa-icon icon="reply" @click="msgReply(msg.id)"></fa-icon>
                         <fa-icon icon="chevron-down"></fa-icon>
                     </div>
                 </template>
+            </div>
+        </div>
+        <div class="chat-msg-input-parent" v-if="messages_parent_data.length">
+            <div class="chat-msg-input-parent__msg" v-for="msg in messages_parent_data" :key="msg.id">
+                {{ msg.user_id }}: {{msg.message}}
             </div>
         </div>
         <div class="chat-msg-inputs">
@@ -37,7 +62,12 @@
             <div class="chat-msg-input-box">
                 <input type="text" placeholder="Написать сообщение" v-model="msgText" @keypress.enter="msgSend"/>
             </div>
-            <div class="chat-msg-inputs-right"></div>
+            <div class="chat-msg-inputs-right" @click="msgSend">
+                <fa-icon icon="paper-plane"></fa-icon>
+<!--                fighter-jet-->
+<!--                paper-plane-->
+<!--                space-shuttle-->
+            </div>
         </div>
     </div>
 </template>
@@ -53,8 +83,22 @@
             chatScroll_ScrollTop: -1,
             chatScroll_ScrollBottom: -1,
             msgText: '',
+            messages_select:[],
+            messages_parent:[]
         }),
+        computed:{
+            messages_parent_data(){
+                let messages = [];
+                this.messages_parent.forEach(
+                    id=>messages.push(this.messages.find(
+                        item=>item.id===id
+                    ))
+                )
+                return messages;
+            }
+        },
         mounted(){
+            window.rtf_chat_body = this;
             this.$once('hook:updated',function(){
                 this.chatScrollInit();
                 this.chatScrollDown();
@@ -103,8 +147,35 @@
                 this.chatScroll_ScrollBottom = 0;
             },
             msgSend(){
-                this.$emit('msgSend', {chatId:this.chatId,text:this.msgText});
-                this.msgText = '';
+                if(this.msgText !== '' || this.messages_parent.length!==0){
+                    this.$emit('msgSend', {
+                        chatId:this.chatId,
+                        text:this.msgText,
+                        parent:this.messages_parent.map(el=>el)
+                    });
+                    this.messages_parent = [];
+                    this.msgText = '';
+                }
+            },
+            msgSelect(id){
+                let index = this.messages_select.indexOf(id);
+                if(index != -1){
+                    this.messages_select.splice(index,1);
+                }else{
+                    this.messages_select.push(id);
+                }
+            },
+            msgReply(id){
+                this.messages_parent = [];
+                this.messages_parent.push(id);
+            },
+            msgsReply(){
+                let messages = [];
+                this.messages_select.forEach(
+                    item=>messages.push(item)
+                );
+                this.messages_select = [];
+                this.messages_parent = messages;
             }
         },
         watch:{

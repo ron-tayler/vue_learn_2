@@ -13,7 +13,10 @@ import {
     faChevronDown,
     faCalendarAlt,
     faCheckCircle,
-    faReply
+    faReply,
+    faFighterJet,
+    faPaperPlane,
+    faSpaceShuttle
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faEllipsisV);
@@ -28,5 +31,8 @@ library.add(faChevronDown);
 library.add(faCalendarAlt);
 library.add(faCheckCircle);
 library.add(faReply);
+library.add(faFighterJet);
+library.add(faPaperPlane);
+library.add(faSpaceShuttle);
 
 export default FontAwesomeIcon

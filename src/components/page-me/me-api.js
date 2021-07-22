@@ -90,14 +90,15 @@ export function msgLP(peer_id,ts=0){
         });
 }
 
-export function messageSend(peer_id, text) {
+export function messageSend(peer_id, text, parent) {
 
     return fetch(SITE_URL+'/message/send?api=1.0',{
         method:'POST',
         body: JSON.stringify({
             'access_token':store.getters.getAccessToken,
             'peer_id':peer_id,
-            'message':text
+            'message':text,
+            'parent':parent
         })
     })
     .then(r=>r.json())

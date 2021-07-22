@@ -54,8 +54,14 @@
                 this.chats.filter(el=>el.id===id)[0].messages = [...messages.reverse(),...this.chats.filter(el=>el.id===id)[0].messages];
             },
             msgSend(data){
-                let chat = this.chats.filter(el=>el.id==data.chatId)[0];
-                API.messageSend(chat.type+''+chat.id,data.text);
+                console.log(data);
+                let chat = this.chats.filter(el=>el.id===data.chatId)[0];
+                let parent = data.parent.map(id=>({
+                    type:'message',
+                    peer_id:chat.type+''+chat.id,
+                    message_id:id
+                }));
+                API.messageSend(chat.type+''+chat.id,data.text,parent);
             }
         },
         watch:{

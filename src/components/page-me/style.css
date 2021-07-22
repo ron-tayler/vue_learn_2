@@ -78,6 +78,9 @@
     padding: 4px 0;
     position: relative;
 }
+.chat-msg-box.my{
+    flex-direction: row-reverse;
+}
 .chat-msg{
     max-width: 70%;
     overflow: hidden;

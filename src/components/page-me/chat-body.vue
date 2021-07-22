@@ -5,14 +5,14 @@
                 Сегодня
             </div>
             <div class="chat-msg-box"
-                 :class="{
-                     notify:(msg.type==='notify'),
-                     active:(messages_select.indexOf(msg.id)!==-1)
-                 }"
                  v-for="msg in messages"
                  :key="msg.id"
-                 @click="msgSelect(msg.id)"
-            >
+                 :class="{
+                     notify:(msg.type==='notify'),
+                     active:(messages_select.indexOf(msg.id)!==-1),
+                     my:(msg.user_id===$store.getters.getUserId)
+                 }"
+                 @click="msgSelect(msg.id)">
                 <template v-if="msg.parent.length>0">
                     <template v-for="(parent,i) in msg.parent">
                         <template v-if="parent.type==='notify'">
@@ -46,7 +46,7 @@
                         </template>
                     </div>
                     <div class="chat-msg__right-btn">
-                        <fa-icon icon="reply" @click="msgReply(msg.id)"></fa-icon>
+                        <fa-icon icon="reply" @click.stop="msgReply(msg.id)"></fa-icon>
                         <fa-icon icon="chevron-down"></fa-icon>
                     </div>
                 </template>
@@ -64,9 +64,6 @@
             </div>
             <div class="chat-msg-inputs-right" @click="msgSend">
                 <fa-icon icon="paper-plane"></fa-icon>
-<!--                fighter-jet-->
-<!--                paper-plane-->
-<!--                space-shuttle-->
             </div>
         </div>
     </div>

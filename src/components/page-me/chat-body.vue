@@ -37,7 +37,7 @@
                                 <div class="chat-msg__user-name">#{{parent_item.user_id}}</div>
                                 <div class="chat-msg__text">{{parent_item.text}}</div>
                                 <template v-if="parent_item.parent.length">
-                                    <div class="chat-msg__parent" v-for="(parent_parent_item,i) in msg.parent" :key="i">
+                                    <div class="chat-msg__parent" v-for="(parent_parent_item,i) in parent_item.parent" :key="i">
                                         <div class="chat-msg__user-name">#{{parent_parent_item.user_id}}</div>
                                         <div class="chat-msg__text">{{parent_parent_item.text}}</div>
                                     </div>

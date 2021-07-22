@@ -91,6 +91,6 @@
     </div>
 </template>
 
-<script src="./page-profile.js"></script>
+<script src="./script.js"></script>
 <style src="./page-profile.css"></style>
 

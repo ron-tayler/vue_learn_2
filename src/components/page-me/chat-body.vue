@@ -5,14 +5,15 @@
                 Сегодня
             </div>
             <div class="chat-msg-box"
-                 v-for="msg in messages"
-                 :key="msg.id"
-                 :class="{
-                     notify:(msg.type==='notify'),
-                     active:(messages_select.indexOf(msg.id)!==-1),
-                     my:(msg.user_id===$store.getters.getUserId)
-                 }"
-                 @click="msgSelect(msg.id)">
+                v-for="msg in messages"
+                :key="msg.id"
+                :class="{
+                    notify:(msg.type==='notify'),
+                    active:(messages_select.indexOf(msg.id)!==-1),
+                    my:(msg.user_id===$store.getters.getUserId)
+                }"
+                @click="msgSelect(msg.id)"
+            >
                 <template v-if="msg.parent.length>0">
                     <template v-for="(parent,i) in msg.parent">
                         <template v-if="parent.type==='notify'">
@@ -28,22 +29,24 @@
                     <div class="chat-msg__left-btn">
                         <fa-icon icon="check-circle"></fa-icon>
                     </div>
-                    <div class="chat-msg__avatar"></div>
-                    <div class="chat-msg">
-                        <div class="chat-msg__user-name">#{{msg.user_id}}</div>
-                        <div class="chat-msg__text">{{msg.message}}</div>
-                        <template v-if="msg.parent.length">
-                            <div class="chat-msg__parent" v-for="(parent_item,i) in msg.parent" :key="i">
-                                <div class="chat-msg__user-name">#{{parent_item.user_id}}</div>
-                                <div class="chat-msg__text">{{parent_item.text}}</div>
-                                <template v-if="parent_item.parent.length">
-                                    <div class="chat-msg__parent" v-for="(parent_parent_item,i) in parent_item.parent" :key="i">
-                                        <div class="chat-msg__user-name">#{{parent_parent_item.user_id}}</div>
-                                        <div class="chat-msg__text">{{parent_parent_item.text}}</div>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
+                    <div class="chat-msg-center-box">
+                        <div class="chat-msg__avatar"></div>
+                        <div class="chat-msg">
+                            <div class="chat-msg__user-name">#{{msg.user_id}}</div>
+                            <div class="chat-msg__text">{{msg.message}}</div>
+                            <template v-if="msg.parent.length">
+                                <div class="chat-msg__parent" v-for="(parent_item,i) in msg.parent" :key="i">
+                                    <div class="chat-msg__user-name">#{{parent_item.user_id}}</div>
+                                    <div class="chat-msg__text">{{parent_item.text}}</div>
+                                    <template v-if="parent_item.parent.length">
+                                        <div class="chat-msg__parent" v-for="(parent_parent_item,i) in parent_item.parent" :key="i">
+                                            <div class="chat-msg__user-name">#{{parent_parent_item.user_id}}</div>
+                                            <div class="chat-msg__text">{{parent_parent_item.text}}</div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                     <div class="chat-msg__right-btn">
                         <fa-icon icon="reply" @click.stop="msgReply(msg.id)"></fa-icon>

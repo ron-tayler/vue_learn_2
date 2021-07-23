@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import {
     faEllipsisV,
+    faEllipsisH,
     faHeart,
     faBell,
     faBellSlash,
@@ -16,10 +17,15 @@ import {
     faReply,
     faFighterJet,
     faPaperPlane,
-    faSpaceShuttle
+    faSpaceShuttle,
+    faSearch,
+    faTrashAlt,
+    faStar,
+    faBan
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faEllipsisV);
+library.add(faEllipsisH);
 library.add(faHeart);
 library.add(faBell);
 library.add(faBellSlash);
@@ -34,5 +40,9 @@ library.add(faReply);
 library.add(faFighterJet);
 library.add(faPaperPlane);
 library.add(faSpaceShuttle);
+library.add(faSearch);
+library.add(faTrashAlt);
+library.add(faStar);
+library.add(faBan);
 
 export default FontAwesomeIcon

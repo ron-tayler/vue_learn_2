@@ -17,9 +17,10 @@
             <keep-alive>
                 <chat-body
                     v-if="select_chat_id"
-                    :messages="chats.filter(el=>el.id===select_chat_id)[0].messages"
+                    :messages="chats.find(el=>el.id===select_chat_id).messages"
                     :key="select_chat_id"
                     :chatId="select_chat_id"
+                    :chat="chats.find(el=>el.id===select_chat_id)"
                     @scrollTop="scrollTop"
                     @msgSend="msgSend"
                 ></chat-body>
@@ -83,6 +84,7 @@
                     let chat = this.chats[i];
                     let ts = 0;
                     if(chat.messages.length>0) ts = chat.messages[chat.messages.length-1].id;
+                    /**/
                     setTimeout(function longTO() {
                         API.msgLP(chat.type+''+chat.id,ts)
                             .then((messages)=>{
@@ -92,7 +94,7 @@
                                 }
                                 setTimeout(longTO,0);
                             })
-                    },0);
+                    },0);//*/
                 })()
             }
         },

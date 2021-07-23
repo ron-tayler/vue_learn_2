@@ -1,5 +1,45 @@
 <template>
     <div class="chat-body">
+        <div class="chat-body__header">
+            <template v-if="messages_select.length===0">
+                <div class="chat-body__header__chat-title">
+                    {{chat.title}}
+                </div>
+                <div class="chat-body__header__user-count">
+                    3 участника
+                </div>
+                <div class="empty"></div>
+                <button class="btn btn-light btn-icon">
+                    <fa-icon icon="search"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-icon">
+                    <fa-icon icon="ellipsis-h"></fa-icon>
+                </button>
+                <div class="chat-body__header__chat-image"></div>
+            </template>
+            <template v-else>
+                <div class="chat-body__header__select-messages-count">
+                    {{messages_select.length}} cообщения
+                </div>
+                <button class="btn btn-light btn-icon" @click="messages_select=[]">X</button>
+                <div class="empty"></div>
+                <button class="btn btn-light btn-icon">
+                    <fa-icon icon="star"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-icon">
+                    <fa-icon icon="trash-alt"></fa-icon>
+                </button>
+                <button class="btn btn-light btn-icon">
+                    <fa-icon icon="ban"></fa-icon>
+                </button>
+                <button class="btn btn-blue">
+                    Переслать
+                </button>
+                <button class="btn btn-blue" @click="msgsReply">
+                    Ответить
+                </button>
+            </template>
+        </div>
         <div ref="chatScroll" class="chat-msg-scroll" @scroll="chatScroll">
             <div class="chat-date">
                 Сегодня
@@ -12,8 +52,7 @@
                     active:(messages_select.indexOf(msg.id)!==-1),
                     my:(msg.user_id===$store.getters.getUserId)
                 }"
-                @click="msgSelect(msg.id)"
-            >
+                @click="msgSelect(msg.id)">
                 <template v-if="msg.parent.length>0">
                     <template v-for="(parent,i) in msg.parent">
                         <template v-if="parent.type==='notify'">
@@ -33,19 +72,19 @@
                         <div class="chat-msg__avatar"></div>
                         <div class="chat-msg">
                             <div class="chat-msg__user-name">#{{msg.user_id}}</div>
-                            <div class="chat-msg__text">{{msg.message}}</div>
-                            <template v-if="msg.parent.length">
+                            <div class="chat-msg__parent-list" v-if="msg.parent.length">
                                 <div class="chat-msg__parent" v-for="(parent_item,i) in msg.parent" :key="i">
                                     <div class="chat-msg__user-name">#{{parent_item.user_id}}</div>
-                                    <div class="chat-msg__text">{{parent_item.text}}</div>
                                     <template v-if="parent_item.parent.length">
                                         <div class="chat-msg__parent" v-for="(parent_parent_item,i) in parent_item.parent" :key="i">
                                             <div class="chat-msg__user-name">#{{parent_parent_item.user_id}}</div>
                                             <div class="chat-msg__text">{{parent_parent_item.text}}</div>
                                         </div>
                                     </template>
+                                    <div class="chat-msg__text">{{parent_item.text}}</div>
                                 </div>
-                            </template>
+                            </div>
+                            <div class="chat-msg__text">{{msg.message}}</div>
                         </div>
                     </div>
                     <div class="chat-msg__right-btn">
@@ -55,9 +94,15 @@
                 </template>
             </div>
         </div>
-        <div class="chat-msg-input-parent" v-if="messages_parent_data.length">
-            <div class="chat-msg-input-parent__msg" v-for="msg in messages_parent_data" :key="msg.id">
-                {{ msg.user_id }}: {{msg.message}}
+        <div class="chat-msg-input-parent" 
+            v-if="messages_parent_data.length">
+            <div class="chat-msg-input-parent__list">
+                <div class="chat-msg-input-parent__msg" v-for="msg in messages_parent_data" :key="msg.id">
+                    {{ msg.user_id }}: {{msg.message}}
+                </div>
+            </div>
+            <div class="chat-msg-input-parent__right">
+                <button class="btn btn-light" @click="messages_parent=[]">X</button>
             </div>
         </div>
         <div class="chat-msg-inputs">
@@ -75,7 +120,7 @@
 <script>
     export default {
         name: "chat-body",
-        props:['messages','chatId'],
+        props:['messages','chatId','chat'],
         SCROLL_EVENT_HEIGHT_TOP: 50,
         SCROLL_EVENT_HEIGHT_BOTTOM: 50,
         data:()=>({

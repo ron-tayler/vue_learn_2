@@ -4,11 +4,13 @@ import router from './router.js'
 import store from "./store.js"
 import meta from 'vue-meta'
 import FontAwesomeIcon from './font-awesome.js'
+import DropMenu from '@/components/base/drop-menu.vue'
 
 import Header from './components/layouts/header.vue'
 import Sidebar from './components/layouts/sidebar.vue'
 
 Vue.component('fa-icon', FontAwesomeIcon)
+Vue.component('drop-menu', DropMenu)
 
 Vue.config.productionTip = false
 Vue.use(router);

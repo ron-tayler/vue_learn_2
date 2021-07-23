@@ -12,16 +12,46 @@
                 <button class="btn btn-light btn-icon">
                     <fa-icon icon="search"></fa-icon>
                 </button>
-                <button class="btn btn-light btn-icon">
-                    <fa-icon icon="ellipsis-h"></fa-icon>
-                </button>
+                <drop-menu>
+                    <template v-slot:button>
+                        <button class="btn btn-light btn-icon">
+                            <fa-icon icon="ellipsis-h"></fa-icon>
+                        </button>
+                    </template>
+                    <template v-slot:menu>
+                        <button class="btn btn-light">
+                            <fa-icon icon="paperclip" style="width: 15px"></fa-icon>
+                            Показать вложения
+                        </button>
+                        <button class="btn btn-light">
+                            <fa-icon icon="user-plus" style="width: 15px"></fa-icon>
+                            Добавить собеседников
+                        </button>
+                        <button class="btn btn-light">
+                            <fa-icon icon="volume-mute" style="width: 15px"></fa-icon>
+                            Без звука
+                        </button>
+                        <hr style="width: 100%; height: 1px">
+                        <button class="btn btn-light">
+                            <fa-icon icon="trash-alt" style="width: 15px"></fa-icon>
+                            Очистить чат
+                        </button>
+                        <button class="btn btn-light">
+                            <fa-icon icon="times" style="width: 15px"></fa-icon>
+                            Выйти из чата
+                        </button>
+                    </template>
+                </drop-menu>
+                
                 <div class="chat-body__header__chat-image"></div>
             </template>
             <template v-else>
                 <div class="chat-body__header__select-messages-count">
                     {{messages_select.length}} cообщения
                 </div>
-                <button class="btn btn-light btn-icon" @click="messages_select=[]">X</button>
+                <button class="btn btn-light btn-icon" @click="messages_select=[]">
+                    <fa-icon icon="times"></fa-icon>
+                </button>
                 <div class="empty"></div>
                 <button class="btn btn-light btn-icon">
                     <fa-icon icon="star"></fa-icon>
@@ -75,12 +105,12 @@
                             <div class="chat-msg__parent-list" v-if="msg.parent.length">
                                 <div class="chat-msg__parent" v-for="(parent_item,i) in msg.parent" :key="i">
                                     <div class="chat-msg__user-name">#{{parent_item.user_id}}</div>
-                                    <template v-if="parent_item.parent.length">
+                                    <div class="chat-msg__parent-list" v-if="parent_item.parent.length">
                                         <div class="chat-msg__parent" v-for="(parent_parent_item,i) in parent_item.parent" :key="i">
                                             <div class="chat-msg__user-name">#{{parent_parent_item.user_id}}</div>
                                             <div class="chat-msg__text">{{parent_parent_item.text}}</div>
                                         </div>
-                                    </template>
+                                    </div>
                                     <div class="chat-msg__text">{{parent_item.text}}</div>
                                 </div>
                             </div>

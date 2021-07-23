@@ -51,7 +51,7 @@
 }
 .chat-body-box {
   flex-grow: 1;
-  overflow: hidden;
+  /*overflow: hidden;*/
   margin: 50px 50px 50px 20px;
   box-shadow: var(--shadow-base);
   border-radius: 10px;
@@ -87,7 +87,7 @@
   flex-shrink: 0;
   color: var(--color-lvl-4);
 }
-.chat-body__header>.btn-icon{
+.chat-body__header .btn-icon{
   flex-shrink: 0;
   font-size: 16px;
   color: var(--color-lvl-4);
@@ -192,11 +192,9 @@
   border-radius: 5px;
   border-left: #808080 solid 2px;
   background: var(--color-lvl-6);
+  padding: 5px;
 }
-.chat-msg__parent {
-  margin-left: 5px;
-  padding-left: 5px;
-}
+.chat-msg__parent {}
 
 
 .chat-msg-box:hover .chat-msg__right-btn > * {

@@ -21,7 +21,11 @@ import {
     faSearch,
     faTrashAlt,
     faStar,
-    faBan
+    faBan,
+    faUserPlus,
+    faTimes,
+    faPaperclip,
+    faVolumeMute
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faEllipsisV);
@@ -44,5 +48,9 @@ library.add(faSearch);
 library.add(faTrashAlt);
 library.add(faStar);
 library.add(faBan);
+library.add(faUserPlus);
+library.add(faTimes);
+library.add(faPaperclip);
+library.add(faVolumeMute);
 
 export default FontAwesomeIcon

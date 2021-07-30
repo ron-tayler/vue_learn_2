@@ -1,4 +1,4 @@
-import store from '@/store.js';
+import store from '@/store';
 
 const SITE_URL = 'https://youinroll.com';
 
@@ -14,15 +14,13 @@ export function getChats(){
             if(d.response){
                 return d.response
             }else if(d.error){
-                console.log(d.error)
-                return null
+                return []
             }else{
                 throw d;
             }
         })
         .catch(e=> {
-            console.log(e);
-            return null
+            return []
         });
 }
 

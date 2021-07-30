@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import Vuex from "vuex"
 
+import chat from './module_chat.js'
+import localStorage from './module_localstorage.js'
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+    modules:{
+        chat,
+        localStorage
+    },
     state:{
         user:0,
         access_token:'',

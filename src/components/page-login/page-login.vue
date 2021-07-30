@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import store from "@/store";
+    import index from "@/store";
     const SITE_URL = 'https://youinroll.com'
     export default {
         name: "page-login",

@@ -1,28 +1,21 @@
 <template>
     <div :id="id" class="page-me">
         <div class="chats">
-            <div class="chats-el" v-for="el in chats" :key="el.id" @click="select_chat_id=el.id">
-                <div class="chats-el-img"></div>
-                <div class="chats-el-info">
-                    <div class="chats-el-title">
-                        <span>{{el.title}}</span>
-                    </div>
-                    <div class="chats-el-last-msg">
-                        <span>{{el.last_msg}}</span>
-                    </div>
-                </div>
-            </div>
+            <list-chats :chats="chats" @selectChat="selectChat"></list-chats>
         </div>
         <div class="chat-body-box">
             <keep-alive>
                 <chat-body
                     v-if="select_chat_id"
-                    :messages="chats.find(el=>el.id===select_chat_id).messages"
+                    ref="chat-body"
                     :key="select_chat_id"
                     :chatId="select_chat_id"
                     :chat="chats.find(el=>el.id===select_chat_id)"
+                    :chats="chats"
+                    :messages="chats.find(el=>el.id===select_chat_id).messages"
                     @scrollTop="scrollTop"
                     @msgSend="msgSend"
+                    @msgForward="msgForward"
                 ></chat-body>
             </keep-alive>
         </div>
@@ -32,9 +25,11 @@
 <script>
     import API from './me-api';
     import ChatBody from './chat-body'
+    import ListChats from './list-chats'
 
     export default {
-        components:{ChatBody},
+        name:'page-me',
+        components:{ChatBody,ListChats},
         props:['id'],
         data:()=>({
             user_id:0,
@@ -57,17 +52,24 @@
             msgSend(data){
                 console.log(data);
                 let chat = this.chats.filter(el=>el.id===data.chatId)[0];
-                let parent = data.parent.map(id=>({
+                let parent = data.parent.map(msg=>({
                     type:'message',
-                    peer_id:chat.type+''+chat.id,
-                    message_id:id
+                    peer_id:msg.chat_id,
+                    message_id:msg.id
                 }));
                 API.messageSend(chat.type+''+chat.id,data.text,parent);
-            }
+            },
+            selectChat(id){
+                this.select_chat_id = id;
+            },
+            msgForward({chat_id, messages}){
+                console.log('chat_id:',chat_id);
+                console.log('messages:',messages);
+            },
         },
         watch:{
             async select_chat_id(id){
-                if(!( id>0 && this.chats && this.chats.filter(el=>el.id===id)[0].messages?.length===0 )) return;
+                if(!( id>0 && this.chats && this.chats.find(el=>el.id===id).messages?.length===0 )) return;
                 this.chats.filter(el=>el.id===id)[0].messages = (await API.getLastMessages4peerId(id)).reverse()??[];
 
             }

@@ -1,5 +1,6 @@
 <template>
     <div class="chat-body">
+        <modal-list-chats ref="modal-list-chats" :chats="chats"></modal-list-chats>
         <div class="chat-body__header">
             <template v-if="messages_select.length===0">
                 <div class="chat-body__header__chat-title">
@@ -42,14 +43,14 @@
                         </button>
                     </template>
                 </drop-menu>
-                
+
                 <div class="chat-body__header__chat-image"></div>
             </template>
             <template v-else>
                 <div class="chat-body__header__select-messages-count">
                     {{messages_select.length}} cообщения
                 </div>
-                <button class="btn btn-light btn-icon" @click="messages_select=[]">
+                <button class="btn btn-light btn-icon" @click="msgsUnSelect">
                     <fa-icon icon="times"></fa-icon>
                 </button>
                 <div class="empty"></div>
@@ -62,7 +63,7 @@
                 <button class="btn btn-light btn-icon">
                     <fa-icon icon="ban"></fa-icon>
                 </button>
-                <button class="btn btn-blue">
+                <button class="btn btn-blue" @click="msgsForward">
                     Переслать
                 </button>
                 <button class="btn btn-blue" @click="msgsReply">
@@ -124,10 +125,10 @@
                 </template>
             </div>
         </div>
-        <div class="chat-msg-input-parent" 
-            v-if="messages_parent_data.length">
+        <div class="chat-msg-input-parent"
+            v-if="messages_parent.length">
             <div class="chat-msg-input-parent__list">
-                <div class="chat-msg-input-parent__msg" v-for="msg in messages_parent_data" :key="msg.id">
+                <div class="chat-msg-input-parent__msg" v-for="msg in messages_parent" :key="msg.id">
                     {{ msg.user_id }}: {{msg.message}}
                 </div>
             </div>
@@ -148,9 +149,19 @@
 </template>
 
 <script>
+    import ModelListChats from '@/components/modals/list-chats'
+
     export default {
         name: "chat-body",
-        props:['messages','chatId','chat'],
+        props: {
+            'messages':Array,
+            'chatId':String,
+            'chat':Object,
+            'chats':Array
+        },
+        components:{
+            'modal-list-chats':ModelListChats
+        },
         SCROLL_EVENT_HEIGHT_TOP: 50,
         SCROLL_EVENT_HEIGHT_BOTTOM: 50,
         data:()=>({
@@ -161,19 +172,8 @@
             messages_select:[],
             messages_parent:[]
         }),
-        computed:{
-            messages_parent_data(){
-                let messages = [];
-                this.messages_parent.forEach(
-                    id=>messages.push(this.messages.find(
-                        item=>item.id===id
-                    ))
-                )
-                return messages;
-            }
-        },
+        computed:{},
         mounted(){
-            window.rtf_chat_body = this;
             this.$once('hook:updated',function(){
                 this.chatScrollInit();
                 this.chatScrollDown();
@@ -240,17 +240,28 @@
                     this.messages_select.push(id);
                 }
             },
+            msgsUnSelect(){
+                this.messages_select = []
+            },
             msgReply(id){
                 this.messages_parent = [];
-                this.messages_parent.push(id);
+                this.messages_parent.push(this.messages.find(el=>el.id===id));
             },
             msgsReply(){
-                let messages = [];
-                this.messages_select.forEach(
-                    item=>messages.push(item)
-                );
+                this.messages_parent = this.messages_select.map(id=>this.messages.find(msg=>msg.id===id));
                 this.messages_select = [];
-                this.messages_parent = messages;
+            },
+            msgsForward(){
+                let vm = this;
+                this.$refs['modal-list-chats'].openModal()
+                .then(id=>{
+                    vm.$emit('msgForward', {
+                        chat_id:id,
+                        messages:vm.messages_select.map(el => el)
+                    });
+                    vm.msgsUnSelect();
+                })
+
             }
         },
         watch:{
